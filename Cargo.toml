@@ -9,3 +9,4 @@ edition = "2021"
 druid = "0.7.0"
 lazy_static = "1.4.0"
 strum = {version = "0.23.0", features = ["derive"]}
+text_io = "0.1.9"

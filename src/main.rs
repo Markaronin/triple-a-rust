@@ -2,8 +2,15 @@ use player::PlayerName;
 use playergamedata::PlayerGameData;
 use spacegamedata::SpaceGameData;
 use spaces::SpaceName;
-use std::collections::HashMap;
+use std::{collections::HashMap, str::FromStr};
 use strum::IntoEnumIterator;
+
+use crate::{
+    player::PLAYERS,
+    unitname::UnitName,
+    unittype::UNIT_TYPES,
+    util::{input, input_int},
+};
 // use druid::widget::{Button, Flex, Label};
 // use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
 
@@ -15,6 +22,7 @@ mod terrain;
 mod unitgamedata;
 mod unitname;
 mod unittype;
+mod util;
 
 enum TurnPhase {
     CombatMove,
@@ -72,10 +80,36 @@ fn combat_move(game_state: &mut GameState) {
 }
 fn buy_units(game_state: &mut GameState) {
     println!("Buy units");
-    println!(
-        "Your current money is: {current_money}",
-        current_money = game_state.players.get(&game_state.turn).unwrap().money
-    );
+
+    let current_player = game_state.players.get_mut(&game_state.turn).unwrap();
+    let buyable_units = &PLAYERS.get(&game_state.turn).unwrap().buyable_units;
+
+    while current_player.money > 0 {
+        println!(
+            "Your current money is: {current_money}",
+            current_money = current_player.money
+        );
+        println!("Buyable units: {buyable_units:?}");
+        let unit_selection = input("What would you like to buy? (q to stop buying)");
+        if unit_selection == "q" {
+            break;
+        }
+        match UnitName::from_str(&unit_selection) {
+            Ok(unit_name) => {
+                let amount = input_int("How many would you like to buy?");
+                let price = UNIT_TYPES.get(&unit_name).unwrap().cost * amount;
+                if price <= current_player.money {
+                    println!("You bought {amount} {unit_name:?}");
+                    current_player.money -= UNIT_TYPES.get(&unit_name).unwrap().cost * amount;
+                    *current_player.bought_units.entry(unit_name).or_insert(0) += amount;
+                } else {
+                    println!("You don't have enough money for that")
+                }
+            }
+            Err(_) => println!("Invalid unit"),
+        }
+    }
+
     game_state.phase = TurnPhase::Combat;
 }
 fn combat(game_state: &mut GameState) {
@@ -88,6 +122,13 @@ fn non_combat_move(game_state: &mut GameState) {
 }
 fn place_units(game_state: &mut GameState) {
     println!("Place units");
+}
+fn next_turn(game_state: &mut GameState) {
+    game_state.turn = game_state.turn.next_turn();
+    println!(
+        "Start of turn for {current_turn:?}",
+        current_turn = game_state.turn
+    );
     game_state.phase = TurnPhase::CombatMove;
 }
 
@@ -99,7 +140,7 @@ fn main() {
         combat(&mut game_state);
         non_combat_move(&mut game_state);
         place_units(&mut game_state);
-        break;
+        next_turn(&mut game_state);
     }
     // let main_window = WindowDesc::new(ui_builder);
     // let data = 0_u32;

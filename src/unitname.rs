@@ -1,9 +1,10 @@
 use crate::{unitgamedata::UnitGameData, unittype::UNIT_TYPES};
 use std::collections::HashMap;
-use strum::EnumIter;
+use strum::{EnumIter, EnumString};
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone, EnumIter)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, EnumIter, EnumString)]
 pub enum UnitName {
+    AncientTower,
     DwarvenPikeman,
     DwarvenAxeman,
     Wall,

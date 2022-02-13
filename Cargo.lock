@@ -1254,6 +1254,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "text_io"
+version = "0.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee74b5019b48991b09803402aaf9e65a053b3993fe9d9c475ab67a395358ba76"
+
+[[package]]
 name = "thiserror"
 version = "1.0.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1333,6 +1339,7 @@ dependencies = [
  "druid",
  "lazy_static",
  "strum 0.23.0",
+ "text_io",
 ]
 
 [[package]]
