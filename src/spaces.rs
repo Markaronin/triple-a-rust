@@ -2,9 +2,10 @@ use crate::terrain::Terrain;
 use lazy_static::lazy_static;
 use std::collections::{HashMap, HashSet};
 use strum::EnumIter;
+use strum::EnumString;
 use strum::IntoEnumIterator;
 
-#[derive(Debug, PartialEq, Eq, Hash, EnumIter, Clone)]
+#[derive(Debug, PartialEq, Eq, Hash, EnumIter, EnumString, Clone)]
 pub enum SpaceName {
     NorthEredLuin,
     ThorinsHalls,

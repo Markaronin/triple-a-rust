@@ -6,12 +6,17 @@ use std::collections::HashMap;
 #[derive(Clone, Debug)]
 pub struct SpaceGameData {
     pub owner_id: PlayerName,
+    // TODO - logic for wall and fortress placement (since they can be placed independently of other placement and only one per turn)
+    pub placements_this_turn: u64,
+    pub conquered_this_turn: bool,
     pub units: HashMap<UnitName, HashMap<UnitGameData, u64>>,
 }
 impl Default for SpaceGameData {
     fn default() -> Self {
         Self {
             owner_id: PlayerName::Neutral,
+            placements_this_turn: 0,
+            conquered_this_turn: false,
             units: vec![].into_iter().collect(),
         }
     }
