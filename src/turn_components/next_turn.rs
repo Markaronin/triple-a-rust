@@ -1,4 +1,6 @@
-use crate::{game_state::GameState, spaces::SPACES, turn_components::turn_phase::TurnPhase};
+use crate::{
+    game_state::GameState, spaces::spaces::SPACES, turn_components::turn_phase::TurnPhase,
+};
 
 pub fn next_turn(game_state: &mut GameState) {
     let current_player = game_state.players.get_mut(&game_state.turn).unwrap();

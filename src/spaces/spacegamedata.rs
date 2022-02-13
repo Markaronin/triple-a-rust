@@ -1,6 +1,6 @@
+use super::spaces::SpaceName;
 use crate::{
     players::player::PlayerName,
-    spaces::SpaceName,
     units::{unitgamedata::UnitGameData, unitname::UnitName},
 };
 use std::collections::HashMap;

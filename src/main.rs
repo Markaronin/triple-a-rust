@@ -8,7 +8,6 @@ use turn_components::{
 
 mod game_state;
 mod players;
-mod spacegamedata;
 mod spaces;
 mod terrain;
 mod turn_components;
