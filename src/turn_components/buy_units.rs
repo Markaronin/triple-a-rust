@@ -2,7 +2,7 @@ use crate::{
     game_state::GameState,
     players::player::PLAYERS,
     turn_components::turn_phase::TurnPhase,
-    units::{unitname::UnitName, unittype::UNIT_TYPES},
+    units::{unit::UNITS, unitname::UnitName},
     util::{input, input_int},
 };
 use std::str::FromStr;
@@ -27,10 +27,10 @@ pub fn buy_units(game_state: &mut GameState) {
             Ok(unit_name) => {
                 // TODO - make sure we can't buy other faction's units
                 let amount = input_int("How many would you like to buy?");
-                let price = UNIT_TYPES.get(&unit_name).unwrap().cost * amount;
+                let price = UNITS.get(&unit_name).unwrap().cost * amount;
                 if price <= current_player.money {
                     println!("You bought {amount} {unit_name:?}");
-                    current_player.money -= UNIT_TYPES.get(&unit_name).unwrap().cost * amount;
+                    current_player.money -= UNITS.get(&unit_name).unwrap().cost * amount;
                     *current_player.bought_units.entry(unit_name).or_insert(0) += amount;
                 } else {
                     println!("You don't have enough money for that")

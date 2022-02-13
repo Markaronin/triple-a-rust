@@ -52,7 +52,7 @@ pub fn place_units(game_state: &mut GameState) {
                 continue;
             }
         };
-        let unit_type = match UnitName::from_str(&input("Which units would you like to place?")) {
+        let unit_name = match UnitName::from_str(&input("Which units would you like to place?")) {
             Ok(unit_name) => {
                 // TODO - make sure we can only place units we have bought
                 unit_name
@@ -67,17 +67,17 @@ pub fn place_units(game_state: &mut GameState) {
         let current_space = game_state.spaces.get_mut(&unit_location).unwrap();
         // TODO - make sure we can't place more than we have or more than the territory can handle
 
-        *current_player.bought_units.get_mut(&unit_type).unwrap() -= amount;
-        if *current_player.bought_units.get_mut(&unit_type).unwrap() == 0 {
-            current_player.bought_units.remove(&unit_type);
+        *current_player.bought_units.get_mut(&unit_name).unwrap() -= amount;
+        if *current_player.bought_units.get_mut(&unit_name).unwrap() == 0 {
+            current_player.bought_units.remove(&unit_name);
         }
 
         current_space.placements_this_turn += amount;
 
-        let unit_game_data = unit_type.default();
+        let unit_game_data = unit_name.default();
         *current_space
             .units
-            .entry(unit_type)
+            .entry(unit_name)
             .or_insert(HashMap::new())
             .entry(unit_game_data)
             .or_insert(0) += amount;

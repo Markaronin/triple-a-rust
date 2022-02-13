@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use strum::{EnumIter, EnumString};
 
-use super::{unitgamedata::UnitGameData, unittype::UNIT_TYPES};
+use super::{unit::UNITS, unitgamedata::UnitGameData};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, EnumIter, EnumString)]
 pub enum UnitName {
@@ -19,10 +19,10 @@ pub enum UnitName {
 }
 impl UnitName {
     pub fn default(&self) -> UnitGameData {
-        let unit_type_data = UNIT_TYPES.get(self).unwrap();
+        let unit = UNITS.get(self).unwrap();
         UnitGameData {
-            current_hp: unit_type_data.max_hp,
-            movement_left: unit_type_data.movement,
+            current_hp: unit.max_hp,
+            movement_left: unit.movement,
         }
     }
 
