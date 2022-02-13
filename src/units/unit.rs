@@ -1,6 +1,6 @@
 use super::{
-    support_types::SupportType, targeted_attacks::TargetedAttack, unit_type::UnitType,
-    unitname::UnitName,
+    support_types::SupportType, targeted_attacks::TargetedAttack,
+    terrain_preference::TerrainPreference, unit_type::UnitType, unitname::UnitName,
 };
 use lazy_static::lazy_static;
 use maplit::hashset;
@@ -11,20 +11,6 @@ pub enum MovementType {
     Land { transporting_cost: u64 },
     Air { air_attack: u64, air_defense: u64 },
     Sea { transporting_capacity: u64 },
-}
-
-#[derive(PartialEq, Eq, Hash)]
-pub enum TerrainPreference {
-    Open,
-    Wilderness,
-    Levy,
-    Woodland,
-    Dwarven,
-    Ambusher,
-    Relentless,
-    Unyielding,
-    Flying,
-    Fortification,
 }
 
 pub struct Unit {

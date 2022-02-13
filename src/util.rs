@@ -19,3 +19,8 @@ pub fn input_int(message: &str) -> u64 {
         }
     }
 }
+
+pub enum AttackingOrDefending {
+    Attacking,
+    Defending,
+}
