@@ -12,5 +12,7 @@ pub fn combat(game_state: &mut GameState) {
     // Some types of targeted attacks
 
     // Draw after 10 turns
+
+    // If won, change territory owner
     game_state.phase = TurnPhase::NonCombatMove;
 }

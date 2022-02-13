@@ -1,4 +1,5 @@
 use lazy_static::lazy_static;
+use maplit::hashset;
 use std::collections::{HashMap, HashSet};
 use strum::EnumIter;
 use strum::IntoEnumIterator;
@@ -62,7 +63,7 @@ impl Default for Player {
 fn players(player_name: &PlayerName) -> Player {
     match player_name {
         PlayerName::Dwarves => Player {
-            buyable_units: vec![
+            buyable_units: hashset! {
                 UnitName::DwarvenAxeman,
                 UnitName::DwarvenAxethrower,
                 UnitName::DwarvenHalberdier,
@@ -72,9 +73,16 @@ fn players(player_name: &PlayerName) -> Player {
                 UnitName::Raven,
                 UnitName::Trebuchet,
                 UnitName::Wall,
-            ]
-            .into_iter()
-            .collect(),
+            },
+        },
+        PlayerName::HighElves => Player {
+            buyable_units: hashset! {
+                UnitName::ElvenArcher,
+                UnitName::ElvenCavalry,
+                UnitName::NoldorinWarrior,
+                UnitName::Wall,
+                // TODO - much more than this
+            },
         },
         _ => Player {
             ..Default::default()

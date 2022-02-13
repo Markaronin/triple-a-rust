@@ -19,7 +19,9 @@ pub fn place_units(game_state: &mut GameState) {
         .iter()
         .filter(|(space_name, space_game_data)| {
             let space = SPACES.get(space_name).unwrap();
-            space.unit_production > 0 && !space_game_data.conquered_this_turn
+            space_game_data.owner_id == game_state.turn
+                && space.unit_production > 0
+                && !space_game_data.conquered_this_turn
         })
         .map(|(space_name, _)| space_name.clone())
         .collect();

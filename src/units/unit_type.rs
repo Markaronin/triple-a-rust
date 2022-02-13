@@ -6,7 +6,7 @@ pub enum UnitType {
     Infantry,
     Ranged,
     SiegeEngine,
-    Calvary,
+    Cavalry,
     Flying,
     Creature,
     Unseen,

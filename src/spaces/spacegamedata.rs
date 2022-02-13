@@ -30,10 +30,6 @@ impl SpaceGameData {
                 owner_id: PlayerName::Dwarves,
                 ..Default::default()
             },
-            SpaceName::EredLuin => SpaceGameData {
-                owner_id: PlayerName::Dwarves,
-                ..Default::default()
-            },
             SpaceName::ThorinsHalls => SpaceGameData {
                 owner_id: PlayerName::Dwarves,
                 units: vec![
@@ -44,7 +40,62 @@ impl SpaceGameData {
                 .collect(),
                 ..Default::default()
             },
+            SpaceName::EredLuin => SpaceGameData {
+                owner_id: PlayerName::Dwarves,
+                ..Default::default()
+            },
+            SpaceName::LittleLhun => SpaceGameData {
+                ..Default::default()
+            },
             SpaceName::Lhun => SpaceGameData {
+                ..Default::default()
+            },
+            SpaceName::NorthForlindon => SpaceGameData {
+                owner_id: PlayerName::HighElves,
+                ..Default::default()
+            },
+            SpaceName::RiverOfForlindon => SpaceGameData {
+                owner_id: PlayerName::HighElves,
+                ..Default::default()
+            },
+            SpaceName::BlueMountains => SpaceGameData {
+                owner_id: PlayerName::Dwarves,
+                units: vec![UnitName::DwarvenAxethrower.tuple_with_default(1)]
+                    .into_iter()
+                    .collect(),
+                ..Default::default()
+            },
+            SpaceName::LhunWestBank => SpaceGameData {
+                owner_id: PlayerName::HighElves,
+                ..Default::default()
+            },
+            SpaceName::SouthForlindon => SpaceGameData {
+                owner_id: PlayerName::HighElves,
+                ..Default::default()
+            },
+            SpaceName::Forlond => SpaceGameData {
+                owner_id: PlayerName::HighElves,
+                units: vec![UnitName::NoldorinWarrior.tuple_with_default(1)]
+                    .into_iter()
+                    .collect(),
+                ..Default::default()
+            },
+            SpaceName::NorthLindon => SpaceGameData {
+                owner_id: PlayerName::HighElves,
+                units: vec![UnitName::ElvenCavalry.tuple_with_default(2)]
+                    .into_iter()
+                    .collect(),
+                ..Default::default()
+            },
+            SpaceName::Mithlond => SpaceGameData {
+                owner_id: PlayerName::HighElves,
+                units: vec![
+                    UnitName::NoldorinWarrior.tuple_with_default(1),
+                    UnitName::ElvenArcher.tuple_with_default(1),
+                    UnitName::Wall.tuple_with_default(1),
+                ]
+                .into_iter()
+                .collect(),
                 ..Default::default()
             },
         }

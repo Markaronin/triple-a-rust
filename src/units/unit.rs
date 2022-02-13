@@ -119,6 +119,52 @@ fn units(unit_name: &UnitName) -> Unit {
             terrain_preference: Some(TerrainPreference::Dwarven),
             ..Default::default()
         },
+        UnitName::ElvenArcher => Unit {
+            name: "Elven Archer".to_string(),
+            attack: 2,
+            defense: 5,
+            movement: 2,
+            cost: 6,
+            targeted_attacks: hashset! {TargetedAttack::AntiAir { amount: 4}},
+            unit_type: hashset! {UnitType::Ranged, UnitType::Infantry, UnitType::Unseen},
+            support: hashset! {SupportType::Armor{ amount: 1, units: 1}, SupportType::Ranged{ amount: 2, units: 1}},
+            terrain_preference: Some(TerrainPreference::Woodland),
+            ..Default::default()
+        },
+        UnitName::ElvenCavalry => Unit {
+            name: "Elven Calvary".to_string(),
+            attack: 5,
+            defense: 3,
+            movement: 4,
+            cost: 8,
+            targeted_attacks: hashset! {TargetedAttack::Flank { amount: 3}},
+            unit_type: hashset! {UnitType::Ranged, UnitType::Cavalry, UnitType::Unseen},
+            support: hashset! {SupportType::Ranged{ amount: 2, units: 1}},
+            terrain_preference: Some(TerrainPreference::Open),
+            ..Default::default()
+        },
+        UnitName::Fortress => Unit {
+            name: "Fortress".to_string(),
+            defense: 3,
+            defense_rolls: 3,
+            max_hp: 2,
+            cost: 32,
+            unit_type: hashset! {UnitType::Fortification},
+            support: hashset! {SupportType::Battlements{ amount: 2, units: 3}},
+            terrain_preference: Some(TerrainPreference::Fortification),
+            ..Default::default()
+        },
+        UnitName::NoldorinWarrior => Unit {
+            name: "Noldorin Warrior".to_string(),
+            attack: 6,
+            defense: 4,
+            movement: 2,
+            cost: 7,
+            unit_type: hashset! {UnitType::Melee, UnitType::Infantry, UnitType::Unseen},
+            support: hashset! {SupportType::Armor{ amount: 2, units: 1}},
+            terrain_preference: Some(TerrainPreference::Woodland),
+            ..Default::default()
+        },
         UnitName::Raven => Unit {
             name: "Raven".to_string(),
             attack: 4,
@@ -133,17 +179,6 @@ fn units(unit_name: &UnitName) -> Unit {
             terrain_preference: Some(TerrainPreference::Flying),
             ..Default::default()
         },
-        UnitName::Trebuchet => Unit {
-            name: "Trebuchet".to_string(),
-            attack: 0,
-            defense: 0,
-            movement: 2,
-            cost: 15,
-            targeted_attacks: hashset! {TargetedAttack::Siege {amount: 6, attacks: 3}},
-            unit_type: hashset! {UnitType::SiegeEngine},
-            support: hashset! {SupportType::Ranged{ amount: 2, units: 2}},
-            ..Default::default()
-        },
         UnitName::Raft => Unit {
             name: "Raft".to_string(),
             attack: 1,
@@ -155,15 +190,15 @@ fn units(unit_name: &UnitName) -> Unit {
             cost: 4,
             ..Default::default()
         },
-        UnitName::Fortress => Unit {
-            name: "Fortress".to_string(),
-            defense: 3,
-            defense_rolls: 3,
-            max_hp: 2,
-            cost: 32,
-            unit_type: hashset! {UnitType::Fortification},
-            support: hashset! {SupportType::Battlements{ amount: 2, units: 3}},
-            terrain_preference: Some(TerrainPreference::Fortification),
+        UnitName::Trebuchet => Unit {
+            name: "Trebuchet".to_string(),
+            attack: 0,
+            defense: 0,
+            movement: 2,
+            cost: 15,
+            targeted_attacks: hashset! {TargetedAttack::Siege {amount: 6, attacks: 3}},
+            unit_type: hashset! {UnitType::SiegeEngine},
+            support: hashset! {SupportType::Ranged{ amount: 2, units: 2}},
             ..Default::default()
         },
         UnitName::Wall => Unit {

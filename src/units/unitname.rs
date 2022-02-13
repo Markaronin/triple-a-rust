@@ -11,10 +11,13 @@ pub enum UnitName {
     DwarvenAxethrower,
     DwarvenHalberdier,
     DwarvenPikeman,
+    ElvenArcher,
+    ElvenCavalry,
+    Fortress,
+    NoldorinWarrior,
     Raft,
     Raven,
     Trebuchet,
-    Fortress,
     Wall,
 }
 impl UnitName {
