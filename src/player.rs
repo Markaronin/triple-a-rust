@@ -1,0 +1,20 @@
+#[derive(Clone)]
+pub enum Player {
+    Saruman,
+    Angmar,
+    Mordor,
+    Arnor,
+    Gondor,
+    Northmen,
+    Lorien,
+    Orcs,
+    Rhun,
+    HighElves,
+    WoodlandRealm,
+    Harad,
+    DolGoldur,
+    Freefolk,
+    Dwarves,
+    Rohan,
+    Neutral,
+}
