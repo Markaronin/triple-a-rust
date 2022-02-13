@@ -1,4 +1,6 @@
-#[derive(Clone)]
+use strum::EnumIter;
+
+#[derive(PartialEq, Eq, Clone, Debug, Hash, EnumIter)]
 pub enum Player {
     Saruman,
     Angmar,

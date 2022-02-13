@@ -1,6 +1,4 @@
-use crate::spacegamedata::SpaceGameData;
 use crate::terrain::Terrain;
-use crate::{player::Player, unitname::UnitName};
 use lazy_static::lazy_static;
 use std::collections::{HashMap, HashSet};
 use strum::EnumIter;
@@ -10,21 +8,25 @@ use strum::IntoEnumIterator;
 pub enum SpaceName {
     NorthEredLuin,
     ThorinsHalls,
+    EredLuin,
+    Lhun,
 }
 
 pub struct Space {
     pub name: String,
     pub connections: Vec<SpaceName>,
+    pub money_production: u64,
+    pub unit_production: u64,
     pub terrain: HashSet<Terrain>,
-    pub starting_value: SpaceGameData,
 }
 impl Default for Space {
     fn default() -> Self {
         Self {
             name: "".to_string(),
             connections: vec![],
+            money_production: 0,
+            unit_production: 0,
             terrain: vec![].into_iter().collect(),
-            starting_value: Default::default(),
         }
     }
 }
@@ -33,29 +35,33 @@ fn spaces(space_name: &SpaceName) -> Space {
     match space_name {
         SpaceName::NorthEredLuin => Space {
             name: "North Ered Luin".to_string(),
-            connections: vec![SpaceName::ThorinsHalls],
+            connections: vec![SpaceName::ThorinsHalls, SpaceName::EredLuin],
+            money_production: 1,
             terrain: vec![Terrain::Mountain].into_iter().collect(),
-            starting_value: SpaceGameData {
-                owner_id: Player::Dwarves,
-                units: vec![].into_iter().collect(),
-            },
+            ..Default::default()
+        },
+        SpaceName::EredLuin => Space {
+            name: "Ered Luin".to_string(),
+            connections: vec![SpaceName::ThorinsHalls, SpaceName::NorthEredLuin],
+            money_production: 1,
+            terrain: vec![Terrain::Mountain].into_iter().collect(),
             ..Default::default()
         },
         SpaceName::ThorinsHalls => Space {
             name: "Thorin's Halls".to_string(),
-            connections: vec![SpaceName::NorthEredLuin],
+            connections: vec![SpaceName::NorthEredLuin, SpaceName::EredLuin],
+            money_production: 3,
+            unit_production: 5,
             terrain: vec![Terrain::Mountain, Terrain::Settlement]
                 .into_iter()
                 .collect(),
-            starting_value: SpaceGameData {
-                owner_id: Player::Dwarves,
-                units: vec![
-                    UnitName::DwarvenPikeman.tuple_with_default(1),
-                    UnitName::Wall.tuple_with_default(7),
-                ]
-                .into_iter()
-                .collect(),
-            },
+            ..Default::default()
+        },
+        SpaceName::Lhun => Space {
+            name: "Lhun".to_string(),
+            connections: vec![SpaceName::NorthEredLuin],
+            money_production: 1,
+            terrain: vec![Terrain::Plains].into_iter().collect(),
             ..Default::default()
         },
     }

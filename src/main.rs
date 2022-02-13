@@ -1,11 +1,14 @@
+use player::Player;
+use playergamedata::PlayerGameData;
 use spacegamedata::SpaceGameData;
-use spaces::{SpaceName, SPACES};
+use spaces::SpaceName;
 use std::collections::HashMap;
 use strum::IntoEnumIterator;
 // use druid::widget::{Button, Flex, Label};
 // use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
 
 mod player;
+mod playergamedata;
 mod spacegamedata;
 mod spaces;
 mod terrain;
@@ -23,17 +26,28 @@ enum TurnPhase {
 
 struct GameState {
     phase: TurnPhase,
+    turn: Player,
+    players: HashMap<Player, PlayerGameData>,
     spaces: HashMap<SpaceName, SpaceGameData>,
 }
 impl GameState {
     fn new() -> Self {
         GameState {
             phase: TurnPhase::CombatMove,
+            turn: Player::Dwarves,
+            players: Player::iter()
+                .map(|player_name| {
+                    (
+                        player_name.clone(),
+                        PlayerGameData::starting_value(&player_name),
+                    )
+                })
+                .collect(),
             spaces: SpaceName::iter()
                 .map(|space_name| {
                     (
                         space_name.clone(),
-                        SPACES.get(&space_name).unwrap().starting_value.clone(),
+                        SpaceGameData::starting_value(&space_name),
                     )
                 })
                 .into_iter()
@@ -45,10 +59,23 @@ impl GameState {
 fn combat_move(game_state: &mut GameState) {
     println!("Combat move");
 
+    let movable_spaces = game_state
+        .spaces
+        .iter()
+        .filter(|(_, space_game_data)| space_game_data.owner_id == game_state.turn)
+        .filter(|(_, space_game_data)| space_game_data.units.len() > 0)
+        .map(|(space_name, _)| space_name)
+        .collect::<Vec<_>>();
+    println!("You can move from these spaces: {movable_spaces:?}");
+
     game_state.phase = TurnPhase::BuyUnits;
 }
 fn buy_units(game_state: &mut GameState) {
     println!("Buy units");
+    println!(
+        "Your current money is: {current_money}",
+        current_money = game_state.players.get(&game_state.turn).unwrap().money
+    );
     game_state.phase = TurnPhase::Combat;
 }
 fn combat(game_state: &mut GameState) {
