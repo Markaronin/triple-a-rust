@@ -1,6 +1,5 @@
+use crate::{players::player::PlayerName, units::unitname::UnitName};
 use std::collections::HashMap;
-
-use crate::{player::PlayerName, units::unitname::UnitName};
 
 pub struct PlayerGameData {
     pub money: u64,

@@ -7,8 +7,7 @@ use turn_components::{
 // use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
 
 mod game_state;
-mod player;
-mod playergamedata;
+mod players;
 mod spacegamedata;
 mod spaces;
 mod terrain;

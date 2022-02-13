@@ -1,6 +1,6 @@
 use crate::{
     game_state::GameState,
-    player::PLAYERS,
+    players::player::PLAYERS,
     turn_components::turn_phase::TurnPhase,
     units::{unitname::UnitName, unittype::UNIT_TYPES},
     util::{input, input_int},

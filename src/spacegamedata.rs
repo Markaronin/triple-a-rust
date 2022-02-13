@@ -1,5 +1,5 @@
 use crate::{
-    player::PlayerName,
+    players::player::PlayerName,
     spaces::SpaceName,
     units::{unitgamedata::UnitGameData, unitname::UnitName},
 };

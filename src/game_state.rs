@@ -1,6 +1,8 @@
 use crate::{
-    player::PlayerName, playergamedata::PlayerGameData, spacegamedata::SpaceGameData,
-    spaces::SpaceName, turn_components::turn_phase::TurnPhase,
+    players::{player::PlayerName, playergamedata::PlayerGameData},
+    spacegamedata::SpaceGameData,
+    spaces::SpaceName,
+    turn_components::turn_phase::TurnPhase,
 };
 use std::collections::HashMap;
 use strum::IntoEnumIterator;
