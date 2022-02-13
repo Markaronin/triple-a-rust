@@ -31,21 +31,27 @@ pub fn place_units(game_state: &mut GameState) {
         );
         println!("You can place in {placeable_spaces:?}");
 
-        let unit_location =
-            match SpaceName::from_str(&input("Where would you like to place units?")) {
-                Ok(space_name) => {
-                    if placeable_spaces.contains(&space_name) {
-                        space_name
-                    } else {
-                        println!("Invalid unit location");
-                        continue;
-                    }
-                }
-                Err(_) => {
+        let unit_location_str =
+            input("Where would you like to place units (q to stop placing units)?");
+
+        if unit_location_str == "q" {
+            break;
+        }
+
+        let unit_location = match SpaceName::from_str(&unit_location_str) {
+            Ok(space_name) => {
+                if placeable_spaces.contains(&space_name) {
+                    space_name
+                } else {
                     println!("Invalid unit location");
                     continue;
                 }
-            };
+            }
+            Err(_) => {
+                println!("Invalid unit location");
+                continue;
+            }
+        };
         let unit_type = match UnitName::from_str(&input("Which units would you like to place?")) {
             Ok(unit_name) => {
                 // TODO - make sure we can only place units we have bought
