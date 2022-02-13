@@ -27,7 +27,7 @@ pub struct Unit {
     pub targeted_attacks: HashSet<TargetedAttack>,
     pub unit_type: HashSet<UnitType>,
     pub support: HashSet<SupportType>,
-    pub terrain_preference: HashSet<TerrainPreference>,
+    pub terrain_preference: Option<TerrainPreference>,
 }
 impl Default for Unit {
     fn default() -> Self {
@@ -47,7 +47,7 @@ impl Default for Unit {
             targeted_attacks: HashSet::new(),
             unit_type: HashSet::new(),
             support: HashSet::new(),
-            terrain_preference: HashSet::new(),
+            terrain_preference: None,
         }
     }
 }
@@ -61,7 +61,7 @@ fn units(unit_name: &UnitName) -> Unit {
             can_be_captured: true,
             unit_type: hashset! {UnitType::Fortification, UnitType::Ancient},
             support: hashset! {SupportType::Battlements{ amount: 2, units: 6}},
-            terrain_preference: hashset! {TerrainPreference::Fortification},
+            terrain_preference: Some(TerrainPreference::Fortification),
             ..Default::default()
         },
         UnitName::AncientWall => Unit {
@@ -71,7 +71,7 @@ fn units(unit_name: &UnitName) -> Unit {
             can_be_captured: true,
             unit_type: hashset! {UnitType::Fortification, UnitType::Ancient},
             support: hashset! {SupportType::Battlements{ amount: 1, units: 6}},
-            terrain_preference: hashset! {TerrainPreference::Fortification},
+            terrain_preference: Some(TerrainPreference::Fortification),
             ..Default::default()
         },
         UnitName::DwarvenAxeman => Unit {
@@ -82,7 +82,7 @@ fn units(unit_name: &UnitName) -> Unit {
             cost: 7,
             unit_type: hashset! {UnitType::Melee, UnitType::Infantry},
             support: hashset! {SupportType::Shield{ amount: 3, units: 1}},
-            terrain_preference: hashset! {TerrainPreference::Dwarven},
+            terrain_preference: Some(TerrainPreference::Dwarven),
             ..Default::default()
         },
         UnitName::DwarvenAxethrower => Unit {
@@ -93,7 +93,7 @@ fn units(unit_name: &UnitName) -> Unit {
             cost: 5,
             unit_type: hashset! {UnitType::Ranged, UnitType::Infantry},
             support: hashset! {SupportType::Armor{ amount: 1, units: 1}, SupportType::Ranged{ amount: 1, units: 1}},
-            terrain_preference: hashset! {TerrainPreference::Dwarven},
+            terrain_preference: Some(TerrainPreference::Dwarven),
             ..Default::default()
         },
         UnitName::DwarvenHalberdier => Unit {
@@ -104,7 +104,7 @@ fn units(unit_name: &UnitName) -> Unit {
             cost: 8,
             unit_type: hashset! {UnitType::Melee, UnitType::Infantry},
             support: hashset! {SupportType::Armor{ amount: 3, units: 1}},
-            terrain_preference: hashset! {TerrainPreference::Unyielding},
+            terrain_preference: Some(TerrainPreference::Unyielding),
             ..Default::default()
         },
         UnitName::DwarvenPikeman => Unit {
@@ -116,7 +116,7 @@ fn units(unit_name: &UnitName) -> Unit {
             targeted_attacks: hashset! {TargetedAttack::Formation { amount: 6 }},
             unit_type: hashset! {UnitType::Melee, UnitType::Infantry},
             support: hashset! {SupportType::Armor{ amount: 2, units: 1}},
-            terrain_preference: hashset! {TerrainPreference::Dwarven},
+            terrain_preference: Some(TerrainPreference::Dwarven),
             ..Default::default()
         },
         UnitName::Raven => Unit {
@@ -130,7 +130,7 @@ fn units(unit_name: &UnitName) -> Unit {
             },
             cost: 7,
             unit_type: hashset! {UnitType::Flying, UnitType::Creature},
-            terrain_preference: hashset! {TerrainPreference::Flying},
+            terrain_preference: Some(TerrainPreference::Flying),
             ..Default::default()
         },
         UnitName::Trebuchet => Unit {
@@ -163,7 +163,7 @@ fn units(unit_name: &UnitName) -> Unit {
             cost: 32,
             unit_type: hashset! {UnitType::Fortification},
             support: hashset! {SupportType::Battlements{ amount: 2, units: 3}},
-            terrain_preference: hashset! {TerrainPreference::Fortification},
+            terrain_preference: Some(TerrainPreference::Fortification),
             ..Default::default()
         },
         UnitName::Wall => Unit {
@@ -173,7 +173,7 @@ fn units(unit_name: &UnitName) -> Unit {
             cost: 8,
             unit_type: hashset! {UnitType::Fortification},
             support: hashset! {SupportType::Battlements{ amount: 1, units: 3}},
-            terrain_preference: hashset! {TerrainPreference::Fortification},
+            terrain_preference: Some(TerrainPreference::Fortification),
             ..Default::default()
         },
     }
