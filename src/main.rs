@@ -1,4 +1,4 @@
-use player::Player;
+use player::PlayerName;
 use playergamedata::PlayerGameData;
 use spacegamedata::SpaceGameData;
 use spaces::SpaceName;
@@ -26,16 +26,16 @@ enum TurnPhase {
 
 struct GameState {
     phase: TurnPhase,
-    turn: Player,
-    players: HashMap<Player, PlayerGameData>,
+    turn: PlayerName,
+    players: HashMap<PlayerName, PlayerGameData>,
     spaces: HashMap<SpaceName, SpaceGameData>,
 }
 impl GameState {
     fn new() -> Self {
         GameState {
             phase: TurnPhase::CombatMove,
-            turn: Player::Dwarves,
-            players: Player::iter()
+            turn: PlayerName::Dwarves,
+            players: PlayerName::iter()
                 .map(|player_name| {
                     (
                         player_name.clone(),

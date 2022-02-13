@@ -1,7 +1,7 @@
 use strum::EnumIter;
 
 #[derive(PartialEq, Eq, Clone, Debug, Hash, EnumIter)]
-pub enum Player {
+pub enum PlayerName {
     Saruman,
     Angmar,
     Mordor,
