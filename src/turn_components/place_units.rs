@@ -1,6 +1,6 @@
 use crate::{
     spaces::{SpaceName, SPACES},
-    unitname::UnitName,
+    units::unitname::UnitName,
     util::{input, input_int},
     GameState,
 };

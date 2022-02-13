@@ -2,8 +2,7 @@ use crate::{
     game_state::GameState,
     player::PLAYERS,
     turn_components::turn_phase::TurnPhase,
-    unitname::UnitName,
-    unittype::UNIT_TYPES,
+    units::{unitname::UnitName, unittype::UNIT_TYPES},
     util::{input, input_int},
 };
 use std::str::FromStr;

@@ -1,7 +1,8 @@
-use crate::unitname::UnitName;
 use lazy_static::lazy_static;
 use std::collections::HashMap;
 use strum::IntoEnumIterator;
+
+use super::unitname::UnitName;
 
 pub enum TargetedAttack {}
 pub enum Support {}

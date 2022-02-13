@@ -1,5 +1,7 @@
 use crate::{
-    player::PlayerName, spaces::SpaceName, unitgamedata::UnitGameData, unitname::UnitName,
+    player::PlayerName,
+    spaces::SpaceName,
+    units::{unitgamedata::UnitGameData, unitname::UnitName},
 };
 use std::collections::HashMap;
 

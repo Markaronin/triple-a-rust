@@ -13,9 +13,7 @@ mod spacegamedata;
 mod spaces;
 mod terrain;
 mod turn_components;
-mod unitgamedata;
-mod unitname;
-mod unittype;
+mod units;
 mod util;
 
 fn main() {

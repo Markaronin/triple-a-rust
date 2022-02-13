@@ -1,6 +1,7 @@
-use crate::{unitgamedata::UnitGameData, unittype::UNIT_TYPES};
 use std::collections::HashMap;
 use strum::{EnumIter, EnumString};
+
+use super::{unitgamedata::UnitGameData, unittype::UNIT_TYPES};
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone, EnumIter, EnumString)]
 pub enum UnitName {
