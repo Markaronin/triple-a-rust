@@ -64,7 +64,13 @@ fn players(player_name: &PlayerName) -> Player {
         PlayerName::Dwarves => Player {
             buyable_units: vec![
                 UnitName::DwarvenAxeman,
+                UnitName::DwarvenAxethrower,
+                UnitName::DwarvenHalberdier,
                 UnitName::DwarvenPikeman,
+                UnitName::Fortress,
+                UnitName::Raft,
+                UnitName::Raven,
+                UnitName::Trebuchet,
                 UnitName::Wall,
             ]
             .into_iter()

@@ -6,8 +6,15 @@ use super::{unitgamedata::UnitGameData, unittype::UNIT_TYPES};
 #[derive(Debug, PartialEq, Eq, Hash, Clone, EnumIter, EnumString)]
 pub enum UnitName {
     AncientTower,
-    DwarvenPikeman,
+    AncientWall,
     DwarvenAxeman,
+    DwarvenAxethrower,
+    DwarvenHalberdier,
+    DwarvenPikeman,
+    Raft,
+    Raven,
+    Trebuchet,
+    Fortress,
     Wall,
 }
 impl UnitName {

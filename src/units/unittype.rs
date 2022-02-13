@@ -7,9 +7,9 @@ use super::unitname::UnitName;
 pub enum TargetedAttack {}
 pub enum Support {}
 pub enum MovementType {
-    Land,
-    Air,
-    Sea,
+    Land { transporting_cost: u64 },
+    Air { air_attack: u64, air_defense: u64 },
+    Sea { transporting_capacity: u64 },
 }
 pub enum TerrainPreference {
     Open,
@@ -40,7 +40,6 @@ pub struct UnitType {
     pub targeted_attacks: Vec<TargetedAttack>,
     pub support: Vec<Support>,
     pub terrain_preference: TerrainPreference,
-    pub transporting_cost: u64,
 }
 impl Default for UnitType {
     fn default() -> Self {
@@ -52,13 +51,14 @@ impl Default for UnitType {
             defense_rolls: 1,
             max_hp: 1,
             movement: 0,
-            movement_type: MovementType::Land,
+            movement_type: MovementType::Land {
+                transporting_cost: 1,
+            },
             cost: 0,
             can_be_captured: false,
             targeted_attacks: vec![],
             support: vec![],
             terrain_preference: TerrainPreference::TODO,
-            transporting_cost: 1,
         }
     }
 }
@@ -72,12 +72,11 @@ fn unit_types(unit_name: &UnitName) -> UnitType {
             can_be_captured: true,
             ..Default::default()
         },
-        UnitName::DwarvenPikeman => UnitType {
-            name: "Dwarven Pikeman".to_string(),
-            attack: 2,
-            defense: 6,
-            movement: 2,
-            cost: 7,
+        UnitName::AncientWall => UnitType {
+            name: "Ancient Wall".to_string(),
+            defense: 2,
+            defense_rolls: 3,
+            can_be_captured: true,
             ..Default::default()
         },
         UnitName::DwarvenAxeman => UnitType {
@@ -86,6 +85,70 @@ fn unit_types(unit_name: &UnitName) -> UnitType {
             defense: 3,
             movement: 2,
             cost: 7,
+            ..Default::default()
+        },
+        UnitName::DwarvenAxethrower => UnitType {
+            name: "Dwarven Axethrower".to_string(),
+            attack: 2,
+            defense: 2,
+            movement: 2,
+            cost: 5,
+            ..Default::default()
+        },
+        UnitName::DwarvenHalberdier => UnitType {
+            name: "Dwarven Halberdier".to_string(),
+            attack: 6,
+            defense: 4,
+            movement: 2,
+            cost: 8,
+            ..Default::default()
+        },
+        UnitName::DwarvenPikeman => UnitType {
+            name: "Dwarven Pikeman".to_string(),
+            attack: 2,
+            defense: 6,
+            movement: 2,
+            cost: 7,
+            ..Default::default()
+        },
+        UnitName::Raven => UnitType {
+            name: "Raven".to_string(),
+            attack: 4,
+            defense: 3,
+            movement: 3,
+            movement_type: MovementType::Air {
+                air_attack: 1,
+                air_defense: 1,
+            },
+            cost: 7,
+            ..Default::default()
+        },
+        UnitName::Trebuchet => UnitType {
+            name: "Trebuchet".to_string(),
+            attack: 0,
+            defense: 0,
+            movement: 2,
+            cost: 15,
+            ..Default::default()
+        },
+        UnitName::Raft => UnitType {
+            name: "Raft".to_string(),
+            attack: 1,
+            defense: 4,
+            movement: 1,
+            movement_type: MovementType::Sea {
+                transporting_capacity: 2,
+            },
+            cost: 4,
+            ..Default::default()
+        },
+        UnitName::Fortress => UnitType {
+            name: "Fortress".to_string(),
+            defense: 3,
+            defense_rolls: 3,
+            max_hp: 2,
+            cost: 32,
+            terrain_preference: TerrainPreference::None,
             ..Default::default()
         },
         UnitName::Wall => UnitType {
