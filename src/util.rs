@@ -1,5 +1,5 @@
-use std::io::Write;
-
+use crate::spaces::spaces::SpaceName;
+use std::{collections::HashSet, io::Write, str::FromStr};
 use text_io::read;
 
 pub fn input(message: &str) -> String {
@@ -16,6 +16,22 @@ pub fn input_int(message: &str) -> u64 {
         Err(_) => {
             println!("Invalid integer");
             input_int(message)
+        }
+    }
+}
+pub fn input_space(message: &str, available: &HashSet<SpaceName>) -> SpaceName {
+    match SpaceName::from_str(&input(message)) {
+        Ok(space_name) => {
+            if available.contains(&space_name) {
+                space_name
+            } else {
+                println!("Invalid space name");
+                input_space(message, available)
+            }
+        }
+        Err(_) => {
+            println!("Invalid unit location");
+            input_space(message, available)
         }
     }
 }
