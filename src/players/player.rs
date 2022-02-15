@@ -1,12 +1,12 @@
+use crate::units::unitname::UnitName;
+use druid::Data;
 use lazy_static::lazy_static;
 use maplit::hashset;
 use std::collections::{HashMap, HashSet};
 use strum::EnumIter;
 use strum::IntoEnumIterator;
 
-use crate::units::unitname::UnitName;
-
-#[derive(PartialEq, Eq, Clone, Debug, Hash, EnumIter)]
+#[derive(PartialEq, Eq, Clone, Debug, Hash, EnumIter, Data)]
 pub enum PlayerName {
     Saruman,
     Angmar,

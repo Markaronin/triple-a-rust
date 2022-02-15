@@ -1,5 +1,7 @@
-#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+use druid::Data;
+
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Data)]
 pub struct UnitGameData {
-    pub current_hp: u64,
-    pub movement_left: u64,
+    pub current_hp: usize,
+    pub movement_left: usize,
 }

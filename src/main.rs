@@ -1,48 +1,42 @@
+use druid::widget::{Button, Flex, Label, LensWrap};
+use druid::{AppLauncher, PlatformError, Widget, WidgetExt, WindowDesc};
 use game_state::GameState;
-use turn_components::{
-    buy_units::buy_units, combat::combat, combat_move::combat_move, next_turn::next_turn,
-    non_combat_move::non_combat_move, place_units::place_units,
-};
-// use druid::widget::{Button, Flex, Label};
-// use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
+use players::player::PlayerName;
+use spaces_widget::build_spaces_widget;
 
 mod game_state;
 mod players;
 mod spaces;
+mod spaces_widget;
 mod terrain;
 mod turn_components;
 mod units;
 mod util;
 
-fn main() {
-    let mut game_state = GameState::new();
-    loop {
-        combat_move(&mut game_state);
-        buy_units(&mut game_state);
-        combat(&mut game_state);
-        non_combat_move(&mut game_state);
-        place_units(&mut game_state);
-        next_turn(&mut game_state);
-    }
-    // let main_window = WindowDesc::new(ui_builder);
-    // let data = 0_u32;
-    // AppLauncher::with_window(main_window)
-    //     .use_simple_logger()
-    //     .launch(data)
+fn main() -> Result<(), PlatformError> {
+    let game_state = GameState::new();
+    let main_window = WindowDesc::new(ui_builder()).title("TripleA Rust Clone");
+    AppLauncher::with_window(main_window)
+        .log_to_console()
+        .launch(game_state)
 }
 
-// fn ui_builder() -> impl Widget<u32> {
-//     // The label text will be computed dynamically based on the current locale and count
-//     let text =
-//         LocalizedString::new("hello-counter").with_arg("count", |data: &u32, _env| (*data).into());
-//     let label = Label::new(text).padding(5.0).center();
-//     let button = Button::new("increment")
-//         .on_click(|_ctx, data, _env| *data += 1)
-//         .padding(5.0);
+fn ui_builder() -> impl Widget<GameState> {
+    let label = Label::new(|data: &PlayerName, _env: &_| format!("Current turn: {:?}", *data))
+        .lens(GameState::turn)
+        .padding(5.0)
+        .center();
 
-//     let mut column = Flex::column();
-//     column.add_child(label);
-//     column.add_child(button);
+    let button = Button::new("Next Turn")
+        .on_click(|_ctx, game_state: &mut GameState, _env| {
+            game_state.turn = game_state.turn.next_turn()
+        })
+        .padding(5.0);
 
-//     column
-// }
+    let space = LensWrap::new(build_spaces_widget(), GameState::spaces);
+
+    Flex::column()
+        .with_child(label)
+        .with_child(button)
+        .with_child(space)
+}

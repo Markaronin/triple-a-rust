@@ -3,15 +3,17 @@ use crate::{
     players::player::PlayerName,
     units::{unitgamedata::UnitGameData, unitname::UnitName},
 };
+use druid::Data;
 use std::collections::HashMap;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Data, PartialEq)]
 pub struct SpaceGameData {
     pub owner_id: PlayerName,
     // TODO - logic for wall and fortress placement (since they can be placed independently of other placement and only one per turn)
-    pub placements_this_turn: u64,
+    pub placements_this_turn: usize,
     pub conquered_this_turn: bool,
-    pub units: HashMap<UnitName, HashMap<UnitGameData, u64>>,
+    #[data(eq)]
+    pub units: HashMap<UnitName, HashMap<UnitGameData, usize>>,
 }
 impl Default for SpaceGameData {
     fn default() -> Self {

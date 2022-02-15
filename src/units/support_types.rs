@@ -9,31 +9,31 @@ pub enum SupportType {
     /**
      * Gives power to allied melee units. Works only when attacking.
      */
-    Ranged { amount: u64, units: u64 },
+    Ranged { amount: usize, units: usize },
     /**
      * Takes away power from enemy melee units.
      */
-    Armor { amount: u64, units: u64 },
+    Armor { amount: usize, units: usize },
     /**
      * Takes away power from enemy ranged units.
      * (Ranged unit type, not to be confused with the identically named ranged support type. For example, units of the siege engine type can give ranged support, too.)
      */
-    Shield { amount: u64, units: u64 },
+    Shield { amount: usize, units: usize },
     /**
      * Takes away power from enemy melee units. Works only when defending.
      */
-    Web { amount: u64, units: u64 },
+    Web { amount: usize, units: usize },
     /**
      * Gives power to most allied units, except: siege engines, fortifications and ships.
      */
-    Leadership { amount: u64, units: u64 },
+    Leadership { amount: usize, units: usize },
     /**
      * Takes away power from most enemy units, except: unseen units (Elves, mostly), siege engines, fortifications and ships.
      */
-    Terror { amount: u64, units: u64 },
+    Terror { amount: usize, units: usize },
     /**
      * Gives power to allied infantry. Works only when defending.
      * Takes away power from most enemy units, except: flying units, siege engines, fortifications and ships.
      */
-    Battlements { amount: u64, units: u64 },
+    Battlements { amount: usize, units: usize },
 }

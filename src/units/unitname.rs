@@ -1,9 +1,10 @@
+use druid::Data;
 use std::collections::HashMap;
 use strum::{EnumIter, EnumString};
 
 use super::{unit::UNITS, unitgamedata::UnitGameData};
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone, EnumIter, EnumString)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, EnumIter, EnumString, Data)]
 pub enum UnitName {
     AncientTower,
     AncientWall,
@@ -29,7 +30,7 @@ impl UnitName {
         }
     }
 
-    pub fn tuple_with_default(self, amount: u64) -> (UnitName, HashMap<UnitGameData, u64>) {
+    pub fn tuple_with_default(self, amount: usize) -> (UnitName, HashMap<UnitGameData, usize>) {
         let default = self.default();
         (self, vec![(default, amount)].into_iter().collect())
     }

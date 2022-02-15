@@ -1,4 +1,5 @@
 use crate::terrain::Terrain;
+use crate::util::Coord2D;
 use lazy_static::lazy_static;
 use maplit::hashset;
 use std::collections::{HashMap, HashSet};
@@ -26,9 +27,10 @@ pub enum SpaceName {
 pub struct Space {
     pub name: String,
     pub connections: HashSet<SpaceName>,
-    pub money_production: u64,
-    pub unit_production: u64,
+    pub money_production: usize,
+    pub unit_production: usize,
     pub terrain: HashSet<Terrain>,
+    pub position: Coord2D,
 }
 impl Default for Space {
     fn default() -> Self {
@@ -38,6 +40,7 @@ impl Default for Space {
             money_production: 0,
             unit_production: 0,
             terrain: HashSet::new(),
+            position: Coord2D { x: 0, y: 0 },
         }
     }
 }
@@ -49,6 +52,7 @@ fn spaces(space_name: &SpaceName) -> Space {
             connections: hashset! {SpaceName::ThorinsHalls, SpaceName::EredLuin, SpaceName::LittleLhun, SpaceName::Lhun},
             money_production: 1,
             terrain: hashset! {Terrain::Mountain},
+            position: Coord2D { x: 800, y: 87 },
             ..Default::default()
         },
         SpaceName::EredLuin => Space {

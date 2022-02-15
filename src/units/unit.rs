@@ -8,21 +8,28 @@ use std::collections::{HashMap, HashSet};
 use strum::IntoEnumIterator;
 
 pub enum MovementType {
-    Land { transporting_cost: u64 },
-    Air { air_attack: u64, air_defense: u64 },
-    Sea { transporting_capacity: u64 },
+    Land {
+        transporting_cost: usize,
+    },
+    Air {
+        air_attack: usize,
+        air_defense: usize,
+    },
+    Sea {
+        transporting_capacity: usize,
+    },
 }
 
 pub struct Unit {
     pub name: String,
-    pub attack: u64,
-    pub attack_rolls: u64,
-    pub defense: u64,
-    pub defense_rolls: u64,
-    pub max_hp: u64,
-    pub movement: u64,
+    pub attack: usize,
+    pub attack_rolls: usize,
+    pub defense: usize,
+    pub defense_rolls: usize,
+    pub max_hp: usize,
+    pub movement: usize,
     pub movement_type: MovementType,
-    pub cost: u64,
+    pub cost: usize,
     pub can_be_captured: bool,
     pub targeted_attacks: HashSet<TargetedAttack>,
     pub unit_type: HashSet<UnitType>,
