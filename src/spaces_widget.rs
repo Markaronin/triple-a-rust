@@ -1,5 +1,3 @@
-use crate::spaces::spacegamedata::SpaceGameData;
-use crate::spaces::spaces::SpaceName;
 use crate::util::{Coord2D, Size2D};
 use druid::piet::{ImageFormat, InterpolationMode};
 use druid::widget::{Label, Painter, SizedBox};
@@ -32,7 +30,7 @@ fn get_image_buf(path: String) -> Arc<[u8]> {
 }
 
 fn get_tile_path(tile_position: Coord2D) -> String {
-    format!("./files/{:02}_{:02}.png", tile_position.x, tile_position.y)
+    format!("./files/{}_{}.png", tile_position.x, tile_position.y)
 }
 
 fn get_src_and_dest_rect(viewport_area: Rect, tile_area: Rect) -> (Rect, Rect) {
@@ -102,28 +100,44 @@ const TILE_SIZE: Size2D = Size2D {
     height: 256,
 };
 
-pub fn build_spaces_widget() -> impl Widget<Arc<HashMap<SpaceName, SpaceGameData>>> {
-    let painter = Painter::new(
-        |ctx, _data: &Arc<HashMap<SpaceName, SpaceGameData>>, _env| {
-            println!("Painting");
-            let widget_origin = ctx.window_origin();
-            let widget_size = ctx.size();
-            let viewport_area = Rect {
-                x0: widget_origin.x,
-                y0: widget_origin.y,
-                x1: widget_origin.x + widget_size.width,
-                y1: widget_origin.y + widget_size.height,
-            };
-            paint_tile_with_coordinates(
-                ctx,
-                Coord2D { x: 0, y: 0 },
-                Coord2D { x: 120, y: 260 },
-                viewport_area,
-            );
-        },
-    );
-    SizedBox::new(Label::new("hello painter"))
+pub fn build_spaces_widget() -> impl Widget<Coord2D> {
+    let painter = Painter::new(|ctx, data: &Coord2D, _env| {
+        println!("Painting");
+        let widget_origin = ctx.window_origin();
+        let widget_size = ctx.size();
+        let viewport_area = Rect {
+            x0: widget_origin.x,
+            y0: widget_origin.y,
+            x1: widget_origin.x + widget_size.width,
+            y1: widget_origin.y + widget_size.height,
+        };
+        let start_tile_x = data.x / TILE_SIZE.width;
+        let end_tile_x = (data.x + widget_size.width as usize) / TILE_SIZE.width;
+        let start_tile_y = data.y / TILE_SIZE.height;
+        let end_tile_y = (data.y + widget_size.height as usize) / TILE_SIZE.height;
+        for tile_x in start_tile_x..=end_tile_x {
+            for tile_y in start_tile_y..=end_tile_y {
+                let tile_offset_x = (((data.x / TILE_SIZE.width) * TILE_SIZE.width) - data.x)
+                    + ((tile_x - start_tile_x) * TILE_SIZE.width);
+                let tile_offset_y = (((data.y / TILE_SIZE.height) * TILE_SIZE.height) - data.y)
+                    + ((tile_y - start_tile_y) * TILE_SIZE.height);
+                paint_tile_with_coordinates(
+                    ctx,
+                    Coord2D {
+                        x: tile_x,
+                        y: tile_y,
+                    },
+                    Coord2D {
+                        x: widget_origin.x as usize + tile_offset_x,
+                        y: widget_origin.y as usize + tile_offset_y,
+                    },
+                    viewport_area,
+                );
+            }
+        }
+    });
+    SizedBox::new(Label::new(""))
         .expand_width()
-        .height(512.0)
+        .height(1024.0)
         .background(painter)
 }

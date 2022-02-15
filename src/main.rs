@@ -33,7 +33,7 @@ fn ui_builder() -> impl Widget<GameState> {
         })
         .padding(5.0);
 
-    let space = LensWrap::new(build_spaces_widget(), GameState::spaces);
+    let space = LensWrap::new(build_spaces_widget(), GameState::window_location);
 
     Flex::column()
         .with_child(label)

@@ -2,7 +2,7 @@ use crate::{
     players::{player::PlayerName, playergamedata::PlayerGameData},
     spaces::{spacegamedata::SpaceGameData, spaces::SpaceName},
     turn_components::turn_phase::TurnPhase,
-    util::{Coord2D, Size2D},
+    util::Coord2D,
 };
 use druid::{Data, Lens};
 use std::{collections::HashMap, sync::Arc};
@@ -11,7 +11,6 @@ use strum::IntoEnumIterator;
 #[derive(Clone, Data, Lens)]
 pub struct GameState {
     pub window_location: Coord2D,
-    pub window_size: Size2D,
     pub phase: TurnPhase,
     pub turn: PlayerName,
     pub players: Arc<HashMap<PlayerName, PlayerGameData>>,
@@ -22,10 +21,6 @@ impl GameState {
     pub fn new() -> Self {
         GameState {
             window_location: Coord2D { x: 0, y: 0 },
-            window_size: Size2D {
-                width: 200,
-                height: 200,
-            },
             phase: TurnPhase::CombatMove,
             turn: PlayerName::Dwarves,
             players: Arc::new(
