@@ -1,32 +1,12 @@
 use crate::util::{Coord2D, Size2D};
-use druid::piet::{ImageFormat, InterpolationMode};
+use druid::piet::{CairoImage, ImageFormat, InterpolationMode};
 use druid::widget::{Label, Painter, SizedBox};
 use druid::{ImageBuf, PaintCtx, Rect, RenderContext, Widget, WidgetExt};
-use lazy_static::lazy_static;
-use maplit::hashmap;
+use std::cell::RefCell;
 use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
 
-lazy_static! {
-    static ref IMAGE_ARRAY: Mutex<HashMap<&'static str, Arc<[u8]>>> = Mutex::new(hashmap!());
-}
-
-/**
- * This will explicitly leak the memory - do not call in an unbounded manner
- */
-fn string_to_static_str(s: String) -> &'static str {
-    Box::leak(s.into_boxed_str())
-}
-
-fn get_image_buf(path: String) -> Arc<[u8]> {
-    let mut img_arr = IMAGE_ARRAY.lock().unwrap();
-    img_arr
-        .entry(string_to_static_str(path.clone()))
-        .or_insert_with(|| {
-            println!("Reading {path}");
-            ImageBuf::from_file(path).unwrap().raw_pixels_shared()
-        })
-        .clone()
+thread_local! {
+    static IMAGE_MAP: std::cell::RefCell<HashMap<String,CairoImage>>  = RefCell::new(HashMap::new());
 }
 
 fn get_tile_path(tile_position: Coord2D) -> String {
@@ -65,34 +45,39 @@ fn paint_tile_with_coordinates(
 ) {
     let path = get_tile_path(tile_position);
 
-    let img_buf = get_image_buf(path);
-    let img = ctx
-        .make_image(
-            TILE_SIZE.width,
-            TILE_SIZE.height,
-            &img_buf,
-            ImageFormat::RgbaSeparate,
-        )
-        .unwrap();
+    // let img_buf = get_image_buf(path.clone());
+    IMAGE_MAP.with(|image_map| {
+        let mut image_map_mut = image_map.borrow_mut();
+        let img = image_map_mut.entry(path.clone()).or_insert_with(|| {
+            let img_buf = ImageBuf::from_file(path).unwrap().raw_pixels_shared();
+            ctx.make_image(
+                TILE_SIZE.width,
+                TILE_SIZE.height,
+                &img_buf,
+                ImageFormat::RgbaSeparate,
+            )
+            .unwrap()
+        });
 
-    let (src_rect, dst_rect) = get_src_and_dest_rect(
-        viewport_area,
-        Rect {
-            x0: paint_position.x as f64,
-            y0: paint_position.y as f64,
-            x1: (paint_position.x + TILE_SIZE.width) as f64,
-            y1: (paint_position.y + TILE_SIZE.height) as f64,
-        },
-    );
+        let (src_rect, dst_rect) = get_src_and_dest_rect(
+            viewport_area,
+            Rect {
+                x0: paint_position.x as f64,
+                y0: paint_position.y as f64,
+                x1: (paint_position.x + TILE_SIZE.width) as f64,
+                y1: (paint_position.y + TILE_SIZE.height) as f64,
+            },
+        );
 
-    ctx.save().unwrap();
-    {
-        // This is sorta hacky. The ctx comes with some preexisting transforms, but I did the math as if from 0,0
-        let current_transform = ctx.current_transform().inverse();
-        ctx.transform(current_transform);
-    }
-    ctx.draw_image_area(&img, src_rect, dst_rect, InterpolationMode::NearestNeighbor);
-    ctx.restore().unwrap();
+        ctx.save().unwrap();
+        {
+            // This is sorta hacky. The ctx comes with some preexisting transforms, but I did the math as if from 0,0
+            let current_transform = ctx.current_transform().inverse();
+            ctx.transform(current_transform);
+        }
+        ctx.draw_image_area(&img, src_rect, dst_rect, InterpolationMode::NearestNeighbor);
+        ctx.restore().unwrap();
+    })
 }
 
 const TILE_SIZE: Size2D = Size2D {
