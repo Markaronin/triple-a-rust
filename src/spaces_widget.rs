@@ -1,7 +1,7 @@
 use crate::util::{Coord2D, Size2D};
 use druid::piet::{CairoImage, ImageFormat, InterpolationMode};
 use druid::widget::{Label, Painter, SizedBox};
-use druid::{ImageBuf, PaintCtx, Rect, RenderContext, Widget, WidgetExt};
+use druid::{ImageBuf, PaintCtx, Point, Rect, RenderContext, Widget, WidgetExt};
 use std::cell::RefCell;
 use std::collections::HashMap;
 
@@ -40,7 +40,7 @@ fn get_src_and_dest_rect(viewport_area: Rect, tile_area: Rect) -> (Rect, Rect) {
 fn paint_tile_with_coordinates(
     ctx: &mut PaintCtx,
     tile_position: Coord2D,
-    paint_position: Coord2D,
+    tile_area: Rect,
     viewport_area: Rect,
 ) {
     let path = get_tile_path(tile_position);
@@ -59,15 +59,7 @@ fn paint_tile_with_coordinates(
             .unwrap()
         });
 
-        let (src_rect, dst_rect) = get_src_and_dest_rect(
-            viewport_area,
-            Rect {
-                x0: paint_position.x as f64,
-                y0: paint_position.y as f64,
-                x1: (paint_position.x + TILE_SIZE.width) as f64,
-                y1: (paint_position.y + TILE_SIZE.height) as f64,
-            },
-        );
+        let (src_rect, dst_rect) = get_src_and_dest_rect(viewport_area, tile_area);
 
         ctx.save().unwrap();
         {
@@ -102,20 +94,32 @@ pub fn build_spaces_widget() -> impl Widget<Coord2D> {
         let end_tile_y = (data.y + widget_size.height as usize) / TILE_SIZE.height;
         for tile_x in start_tile_x..=end_tile_x {
             for tile_y in start_tile_y..=end_tile_y {
-                let tile_offset_x = (((data.x / TILE_SIZE.width) * TILE_SIZE.width) - data.x)
-                    + ((tile_x - start_tile_x) * TILE_SIZE.width);
-                let tile_offset_y = (((data.y / TILE_SIZE.height) * TILE_SIZE.height) - data.y)
-                    + ((tile_y - start_tile_y) * TILE_SIZE.height);
+                let tile_offset_x = ((data.x / TILE_SIZE.width) * TILE_SIZE.width) as f64
+                    + ((tile_x - start_tile_x) * TILE_SIZE.width) as f64
+                    - data.x as f64;
+                let tile_offset_y = ((data.y / TILE_SIZE.height) * TILE_SIZE.height) as f64
+                    + ((tile_y - start_tile_y) * TILE_SIZE.height) as f64
+                    - data.y as f64;
+
+                let paint_position = Point {
+                    x: widget_origin.x + tile_offset_x,
+                    y: widget_origin.y + tile_offset_y,
+                };
+
+                let tile_area = Rect {
+                    x0: paint_position.x,
+                    y0: paint_position.y,
+                    x1: paint_position.x + TILE_SIZE.width as f64,
+                    y1: paint_position.y + TILE_SIZE.height as f64,
+                };
+
                 paint_tile_with_coordinates(
                     ctx,
                     Coord2D {
                         x: tile_x,
                         y: tile_y,
                     },
-                    Coord2D {
-                        x: widget_origin.x as usize + tile_offset_x,
-                        y: widget_origin.y as usize + tile_offset_y,
-                    },
+                    tile_area,
                     viewport_area,
                 );
             }

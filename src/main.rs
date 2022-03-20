@@ -32,11 +32,17 @@ fn ui_builder() -> impl Widget<GameState> {
             game_state.turn = game_state.turn.next_turn()
         })
         .padding(5.0);
+    let nav_button_right = Button::new("Move right")
+        .on_click(|_ctx, game_state: &mut GameState, _env| {
+            game_state.window_location.x += 5;
+        })
+        .padding(5.0);
 
     let space = LensWrap::new(build_spaces_widget(), GameState::window_location);
 
     Flex::column()
         .with_child(label)
         .with_child(button)
+        .with_child(nav_button_right)
         .with_child(space)
 }
